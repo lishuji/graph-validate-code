@@ -28,10 +28,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Kanelli\\GraphValidateCode\\GraphValidateCodeProvider"
+                "Kanelli\\GraphValidateCode\\Providers\\GraphValidateCodeProvider"
             ],
             "aliases": {
-                "gvc": "GraphValidateCode"
+                "Gvc": "Kanelli\\GraphValidateCode\\Facades\\GraphValidateCodeFacade"
             }
         }
     }
