@@ -18,7 +18,7 @@ class GraphValidateCodeProvider extends \Illuminate\Support\ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__ . '/../config/validate.php' => config_path('validate.php'),
+            __DIR__ . '/../../config/validate.php' => config_path('validate.php'),
         ]);
     }
 
