@@ -2,13 +2,14 @@
 
 namespace Kanelli\GraphValidateCode\Providers;
 
+use Illuminate\Support\ServiceProvider;
 use Kanelli\GraphValidateCode\GraphValidateCode;
 
 /**
  * Class ServiceProvider
  * @package Kanelli\ImageVerifyCode
  */
-class GraphValidateCodeProvider extends \Illuminate\Support\ServiceProvider
+class GraphValidateCodeProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.
@@ -18,7 +19,7 @@ class GraphValidateCodeProvider extends \Illuminate\Support\ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__ . '/../../config/validate.php' => config_path('validate.php'),
+            __DIR__ . '/../config/validate.php' => config_path('validate.php'),
         ]);
     }
 
@@ -29,8 +30,8 @@ class GraphValidateCodeProvider extends \Illuminate\Support\ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('gvc', function () {
-            return new GraphValidateCode();
+        $this->app->singleton(GraphValidateCode::class, function () {
+            return new GraphValidateCode(config('validate'));
         });
     }
 }

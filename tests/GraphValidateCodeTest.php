@@ -1,5 +1,7 @@
 <?php
 
+namespace Test;
+
 use Illuminate\Support\Facades\Redis;
 use Kanelli\GraphValidateCode\Exceptions\InvalidParamException;
 use Kanelli\GraphValidateCode\GraphValidateCode;
