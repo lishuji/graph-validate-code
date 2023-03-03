@@ -1,13 +1,13 @@
 <?php
 
-namespace Kanelli\GraphValidateCode\Services;
+namespace Kanelli\GraphValidateCode;
 
 
 use Illuminate\Support\Facades\Redis;
 use Kanelli\GraphValidateCode\Exceptions\InvalidParamException;
 
 
-class GraphValidateCodeServer
+class GraphValidateCode
 {
     /**
      * 图片验证码缓存 key

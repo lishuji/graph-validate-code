@@ -2,17 +2,17 @@
 
 namespace Kanelli\GraphValidateCode\Facades;
 
-
-use Kanelli\GraphValidateCode\Services\GraphValidateCodeServer;
+use Illuminate\Support\Facades\Facade;
+use Kanelli\GraphValidateCode\GraphValidateCode;
 
 /**
  * Class Facade
  * @package Kanelli\ImageVerifyCode
  */
-class GraphValidateCodeFacade extends \Illuminate\Support\Facades\Facade
+class GraphValidateCodeFacade extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return GraphValidateCodeServer::class;
+        return GraphValidateCode::class;
     }
 }

@@ -5,6 +5,11 @@
             "Kanelli\\GraphValidateCode\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests"
+        }
+    },
     "authors": [
         {
             "name": "kanelli",
@@ -26,7 +31,7 @@
                 "Kanelli\\GraphValidateCode\\GraphValidateCodeProvider"
             ],
             "aliases": {
-                "gvc": "Kanelli\\GraphValidateCode\\Facades\\GraphValidateCodeFacade"
+                "gvc": "GraphValidateCode"
             }
         }
     }

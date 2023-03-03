@@ -1,8 +1,8 @@
 <?php
 
-namespace Kanelli\GraphValidateCode;
+namespace Kanelli\GraphValidateCode\Providers;
 
-use Kanelli\GraphValidateCode\Services\GraphValidateCodeServer;
+use Kanelli\GraphValidateCode\GraphValidateCode;
 
 /**
  * Class ServiceProvider
@@ -10,8 +10,6 @@ use Kanelli\GraphValidateCode\Services\GraphValidateCodeServer;
  */
 class GraphValidateCodeProvider extends \Illuminate\Support\ServiceProvider
 {
-    protected $defer = true;
-
     /**
      * Bootstrap the application services.
      *
@@ -20,7 +18,7 @@ class GraphValidateCodeProvider extends \Illuminate\Support\ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__ . '/../config/validate-code.php' => config_path('validate-code.php'),
+            __DIR__ . '/../config/validate.php' => config_path('validate.php'),
         ]);
     }
 
@@ -31,8 +29,8 @@ class GraphValidateCodeProvider extends \Illuminate\Support\ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(GraphValidateCodeServer::class, function () {
-            return new GraphValidateCodeServer();
+        $this->app->singleton('gvc', function () {
+            return new GraphValidateCode();
         });
     }
 }

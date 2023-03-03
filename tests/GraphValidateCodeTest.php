@@ -1,9 +1,9 @@
 <?php
 
-use Kanelli\GraphValidateCode\Exceptions\InvalidParamException;
-use Kanelli\GraphValidateCode\Services\GraphValidateCodeServer;
-use PHPUnit\Framework\TestCase;
 use Illuminate\Support\Facades\Redis;
+use Kanelli\GraphValidateCode\Exceptions\InvalidParamException;
+use Kanelli\GraphValidateCode\GraphValidateCode;
+use PHPUnit\Framework\TestCase;
 
 
 class GraphValidateCodeTest extends TestCase
@@ -16,7 +16,7 @@ class GraphValidateCodeTest extends TestCase
     {
         $this->expectException(InvalidParamException::class);
 
-        new GraphValidateCodeServer([
+        new GraphValidateCode([
             'rand_number' => '1234567890',
             'width' => 100,
         ]);
@@ -32,7 +32,7 @@ class GraphValidateCodeTest extends TestCase
     {
         Redis::shouldReceive('setex')->once()->andReturn(true);
 
-        $server = new GraphValidateCodeServer([
+        $server = new GraphValidateCode([
             'rand_number' => '1234567890abcdef',
             'width' => 60,
             'height' => 30
@@ -49,7 +49,7 @@ class GraphValidateCodeTest extends TestCase
      */
     public function testVerifyCode(): void
     {
-        $server = new GraphValidateCodeServer([
+        $server = new GraphValidateCode([
             'rand_number' => '1234567890abcdef',
             'width' => 60,
             'height' => 30
