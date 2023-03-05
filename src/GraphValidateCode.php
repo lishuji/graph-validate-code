@@ -111,10 +111,10 @@ class GraphValidateCode
     /**
      * 校验图片验证码
      * @param string $sessionId session id
-     * @param int $verifyCode 验证码
+     * @param string $verifyCode 验证码
      * @return bool
      */
-    public function verifyCode(string $sessionId, int $verifyCode): bool
+    public function checkCode(string $sessionId, string $verifyCode): bool
     {
         $cacheVerifyCode = Redis::get(self::IMG_VERIFY_CODE_CACHE_KEY . $sessionId);
 
