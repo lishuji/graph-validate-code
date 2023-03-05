@@ -2,7 +2,6 @@
 
 namespace Test;
 
-use Illuminate\Support\Facades\Redis;
 use Kanelli\GraphValidateCode\Exceptions\InvalidParamException;
 use Kanelli\GraphValidateCode\GraphValidateCode;
 use PHPUnit\Framework\TestCase;
@@ -18,54 +17,42 @@ class GraphValidateCodeTest extends TestCase
     {
         $this->expectException(InvalidParamException::class);
 
-        new GraphValidateCode([
+        $this->expectExceptionMessage('server config invalid');
+
+        $server = new GraphValidateCode();
+
+        $server->config([
             'rand_number' => '1234567890',
             'width' => 100,
         ]);
 
-        $this->expectExceptionMessage('server config invalid');
+        $this->fail('server config invalid');
     }
 
     /**
      * @return void
-     * @throws InvalidParamException
      */
-    public function testGenVerifyCodeImg(): void
+    public function testGetValidateImage(): void
     {
-        Redis::shouldReceive('setex')->once()->andReturn(true);
+        $server = \Mockery::mock(GraphValidateCode::class);
+        $server->shouldReceive('getValidateImage')->once()->andReturn();
 
-        $server = new GraphValidateCode([
-            'rand_number' => '1234567890abcdef',
-            'width' => 60,
-            'height' => 30
-        ]);
-
-        $base64Image = $server->genImgVerifyCode('1234567890abcdef');
+        $base64Image = $server->getValidateImage('1234567890abcdef', '123456');
 
         $this->assertIsString($base64Image);
     }
 
     /**
      * @return void
-     * @throws InvalidParamException
      */
     public function testVerifyCode(): void
     {
-        $server = new GraphValidateCode([
-            'rand_number' => '1234567890abcdef',
-            'width' => 60,
-            'height' => 30
-        ]);
+        $server = \Mockery::mock(GraphValidateCode::class);
+        $server->shouldReceive('getValidateImage', 'checkCode')->once()->andReturn(true);
 
-        $code = $server->getRandomVerifyCode();
+        $server->getValidateImage('1234567890abcdef', '3799');
 
-        Redis::shouldReceive('setex')->once()->andReturn(true);
-
-        $server->genImgVerifyCode('1234567890abcdef', $code);
-
-        Redis::shouldReceive('get')->once()->andReturn($code);
-
-        $checkoutRes = $server->checkImgVerifyCode('1234567890abcdef', $code);
+        $checkoutRes = $server->checkCode('1234567890abcdef', '3799');
 
         $this->assertTrue($checkoutRes);
     }
