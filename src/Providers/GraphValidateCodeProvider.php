@@ -30,8 +30,8 @@ class GraphValidateCodeProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('gvc', function ($app) {
-            return new GraphValidateCode($app['config']['validate']['graph']);
+        $this->app->singleton('gvc', function () {
+            return new GraphValidateCode();
         });
     }
 }

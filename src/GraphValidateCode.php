@@ -20,7 +20,7 @@ class GraphValidateCode
      * @param array $config
      * @throws InvalidParamException
      */
-    public function __construct(array $config = [])
+    public function config(array $config = []): static
     {
         if (empty($config['rand_number']) || empty($config['width']) || empty($config['height'])) {
             throw new InvalidParamException('server config invalid');
@@ -32,11 +32,11 @@ class GraphValidateCode
     }
 
     /**
-     * 生成校验图片
+     * 生成图片
      * @param $verifyCode
      * @return string
      */
-    public function genVerifyCodeImg($verifyCode)
+    private function genVerifyCodeImg($verifyCode): string
     {
         //验证码图片保存路径，文件名称
         $file_name = '/tmp/' . $verifyCode . '.png';
@@ -64,10 +64,11 @@ class GraphValidateCode
     }
 
     /**
+     * 图片转base64
      * @param $image_file
      * @return string
      */
-    public function base64EncodeImage($image_file)
+    private function base64EncodeImage($image_file): string
     {
         $image_info = getimagesize($image_file);
         $image_data = fread(fopen($image_file, 'r'), filesize($image_file));
@@ -76,14 +77,14 @@ class GraphValidateCode
 
     /**
      * 生成随机验证码
-     * @param int $num 验证码位数
+     * @param int $length 验证码长度
      * @return string
      */
-    public function getRandomVerifyCode($num = 4)
+    private function getRandomVerifyCode(int $length = 4): string
     {
         $code = '';
 
-        for ($i = 0; $i < $num; $i++) {
+        for ($i = 0; $i < $length; $i++) {
             $code .= $this->config['rand_number'][rand(0, strlen($this->config['rand_number']) - 1)];
         }
 
@@ -91,10 +92,12 @@ class GraphValidateCode
     }
 
     /**
-     * 生成图片验证码,并放入Redis
-     * @return mixed
+     * 获取图片验证码
+     * @param string $sessionId session id
+     * @param string|null $verifyCode 验证码
+     * @return string
      */
-    public function genImgVerifyCode($sessionId, $verifyCode = null)
+    public function getValidateImage(string $sessionId, string $verifyCode = null): string
     {
         $verifyCode = !is_null($verifyCode) ? $verifyCode : $this->getRandomVerifyCode();
 
@@ -107,11 +110,11 @@ class GraphValidateCode
 
     /**
      * 校验图片验证码
-     * @param $key
-     * @param $verifyCode
+     * @param string $sessionId session id
+     * @param int $verifyCode 验证码
      * @return bool
      */
-    public function checkImgVerifyCode($sessionId, $verifyCode)
+    public function verifyCode(string $sessionId, int $verifyCode): bool
     {
         $cacheVerifyCode = Redis::get(self::IMG_VERIFY_CODE_CACHE_KEY . $sessionId);
 
